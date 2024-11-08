@@ -1,0 +1,1304 @@
+Restoring modules from user's gpu
+sys.platform: linux
+Python: 3.10.15 (main, Oct  3 2024, 07:27:34) [GCC 11.2.0]
+Python Path: /home/bal753/miniconda3/envs/immune/bin/python
+GCC: gcc (GCC) 6.2.0
+OpenCV: 4.10.0
+CUDA available: True
+MUSA available: False
+numpy_random_seed: 2147483648
+GPU 0: NVIDIA L40S
+CUDA_HOME: /n/app/cuda/11.2
+NVCC: Cuda compilation tools, release 11.2, V11.2.142
+PyTorch: 2.1.2
+TorchVision: 0.16.2
+PyTorch compiling details: PyTorch built with:
+  - GCC 9.3
+  - C++ Version: 201703
+  - Intel(R) oneAPI Math Kernel Library Version 2023.1-Product Build 20230303 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v3.1.1 (Git Hash 64f6bcbcbab628e96f33a62c3e975f8535a7bde4)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - LAPACK is enabled (usually provided by MKL)
+  - NNPACK is enabled
+  - CPU capability usage: AVX512
+  - CUDA Runtime 12.1
+  - NVCC architecture flags: -gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86;-gencode;arch=compute_90,code=sm_90
+  - CuDNN 8.9.2
+  - Magma 2.6.1
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=12.1, CUDNN_VERSION=8.9.2, CXX_COMPILER=/opt/rh/devtoolset-9/root/usr/bin/c++, CXX_FLAGS= -D_GLIBCXX_USE_CXX11_ABI=0 -fabi-version=11 -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOROCTRACER -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-unused-parameter -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-stringop-overflow -Wno-psabi -Wno-error=pedantic -Wno-error=old-style-cast -Wno-invalid-partial-specialization -Wno-unused-private-field -Wno-aligned-allocation-unavailable -Wno-missing-braces -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Werror=cast-function-type -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_DISABLE_GPU_ASSERTS=ON, TORCH_VERSION=2.1.2, USE_CUDA=ON, USE_CUDNN=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, 
+
+
+Sun Nov  3 08:34:48 2024       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 550.54.14              Driver Version: 550.54.14      CUDA Version: 12.4     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA L40S                    On  |   00000000:CA:00.0 Off |                    0 |
+| N/A   26C    P8             33W /  350W |       0MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+
+/home/bal753/miniconda3/envs/immune/lib/python3.10/site-packages/torch/functional.py:504: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /opt/conda/conda-bld/pytorch_1702400410390/work/aten/src/ATen/native/TensorShape.cpp:3526.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+==================================================
+{ 'batch_size': 64,
+  'device': 'cuda',
+  'feat_folder': '/n/scratch/users/b/bal753/DFCI_MOTSU',
+  'hf_token': None,
+  'models': [<ModelType.CTRANS: 1>],
+  'n_parts': 1,
+  'part': 0,
+  'patch_folder': '/n/scratch/users/b/bal753/DFCI_MOTSU',
+  'wsi_folder': '/home/bal753/lab/bal753/DFCI'}
+==================================================
+Found 412 available slide bags to process.
+Split items into 1 parts, processing part 0
+['10326', '10783', '10846', '11496', '12064', '12151', '12555', '12833', '13087', '13576', '13658', '14004', '14072', '14174', '14706', '14821', '15236', '15336', '15407', '15787', '15865', '16160', '16185', '16291', '16556', '16557', '16925', '17077', '17093', '17102', '17164', '17564', '17592', '17685', '17902', '17993', '18688', '18779', '19063', '19260', '19767', '19807', '20182', '20304', '20737', '21154', '21545', '22266', '22653', '22948', '23226', '23361', '23445', '23516', '23619', '23751', '23763', '23850', '23864', '23979', '24064', '24261', '24433', '24479', '24656', '24664', '24855', '25224', '25452', '25582', '25657', '25755', '25818', '25832', '25967', '25978', '26229', '26245', '26327', '26543', '26552', '26644', '26650', '26667', '26674', '26698', '26813', '27139', '27425', '27737', '27821', '27886', '27967', '27984', '27985', '27987', '28257', '28394', '28417', '28459', '28538', '28674', '28685', '28847', '28870', '29113', '29194', '29286', '29290', '29342', '29391', '29403', '29552', '29914', '29979', '30328', '30329', '30442', '30496', '30591', '30833', '30988', '31076', '31218', '31246', '31250', '31292', '31314', '31319', '31404', '31538', '31697', '31761', '31772', '31798', '31809', '31902', '31955', '32060', '32067', '32109', '32186', '32191', '32213', '32269', '32271', '32292', '32349', '32388', '32515', '32516', '32530', '32534', '32548', '32564', '32571', '32582', '32594', '32633', '32638', '32684', '32685', '32777', '32821', '32857', '32886', '32889', '32930', '33000', '33023', '33039', '33083', '33147', '33180', '33192', '33196', '33203', '33204', '33256', '33257', '33283', '33315', '33334', '33473', '33514', '33518', '33570', '33581', '33606', '33608', '33671', '33674', '33789', '33820', '33831', '33844', '33858', '33873', '33885', '33893', '33918', '33951', '33958', '33982', '34012', '34055', '34088', '34132', '34226', '34227', '34229', '34256', '34278', '34292', '34300', '34373', '34380', '34407', '34438', '34492', '34513', '34529', '34543', '34607', '34621', '34624', '34637', '34653', '34654', '34663', '34737', '34768', '34783', '34787', '34827', '34839', '34842', '34843', '34858', '34873', '34876', '34899', '34912', '34926', '34941', '34975', '34986', '35015', '35016', '35027', '35042', '35088', '35121', '35125', '35144', '35223', '35239', '35293', '35295', '35296', '35339', '35365', '35470', '35471', '35489', '35514', '35516', '35575', '35576', '35585', '35586', '35587', '35612', '35659', '35667', '35671', '35691', '35725', '35731', '35735', '35737', '35757', '35760', '35770', '35781', '35817', '35852', '35885', '35900', '35995', '35996', '36021', '36085', '36090', '36152', '36153', '36158', '36245', '36255', '36342', '36389', '36401', '36412', '36423', '36442', '36725', '36738', '36745', '36816', '36817', '36854', '36861', '37028', '37090', '37092', '37094', '37276', '37301', '37497', '37498', '37585', '37615', '37635', '37699', '37701', '37707', '37728', '37729', '37768', '37782', '37806', '37838', '37863', '37887', '37972', '37981', '37984', '38025', '38028', '38031', '38040', '38041', '38045', '38073', '38107', '38125', '38184', '38218', '38252', '38328', '38369', '38465', '38560', '38667', '38689', '38784', '38792', '38799', '38842', '38909', '38911', '38914', '38940', '39250', '39343', '39392', '39460', '39562', '39602', '39898', '40174', '40399', '40444', '40778', '41491', '41507', '42047', '42447', '42494', '42537', '42544', '42576', '42744', '42794', '42875', '43470', '43505', '43748', '43749', '43776', '43992', '44017', '44088', '44135', '44249', '44744', '44824', '45189', '45568', '46498', '49820', '49964', '50075', '8145', '8146', '8478', '8557', '8598', '8802', '9007', '9842', '9875']
+Process slide indices [0:412]
+Error processing 10326: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 10783: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 10846: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 11496: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 12064: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 12151: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 12555: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 12833: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 13087: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 13576: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 13658: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 14004: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 14072: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 14174: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 14706: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 14821: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 15236: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 15336: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 15407: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 15787: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 15865: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 16160: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 16185: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 16291: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 16556: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 16557: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 16925: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 17077: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 17093: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 17102: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 17164: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 17564: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 17592: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 17685: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 17902: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 17993: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 18688: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 18779: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 19063: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 19260: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 19767: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 19807: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 20182: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 20304: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 20737: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 21154: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 21545: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 22266: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 22653: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 22948: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 23226: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 23361: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 23445: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 23516: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 23619: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 23751: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 23763: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 23850: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 23864: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 23979: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 24064: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 24261: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 24433: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 24479: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 24656: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 24664: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 24855: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 25224: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 25452: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 25582: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 25657: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 25755: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 25818: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 25832: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 25967: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 25978: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 26229: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 26245: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 26327: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 26543: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 26552: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 26644: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 26650: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 26667: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 26674: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 26698: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 26813: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 27139: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 27425: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 27737: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 27821: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 27886: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 27967: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 27984: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 27985: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 27987: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 28257: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 28394: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 28417: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 28459: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 28538: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 28674: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 28685: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 28847: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 28870: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 29113: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 29194: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 29286: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 29290: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 29342: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 29391: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 29403: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 29552: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 29914: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 29979: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 30328: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 30329: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 30442: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 30496: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 30591: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 30833: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 30988: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31076: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31218: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31246: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31250: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31292: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31314: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31319: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31404: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31538: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31697: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31761: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31772: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31798: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31809: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31902: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 31955: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32060: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32067: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32109: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32186: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32191: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32213: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32269: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32271: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32292: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32349: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32388: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32515: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32516: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32530: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32534: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32548: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32564: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32571: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32582: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32594: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32633: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32638: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32684: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32685: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32777: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32821: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32857: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32886: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32889: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 32930: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33000: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33023: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33039: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33083: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33147: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33180: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33192: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33196: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33203: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33204: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33256: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33257: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33283: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33315: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33334: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33473: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33514: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33518: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33570: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33581: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33606: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33608: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33671: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33674: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33789: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33820: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33831: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33844: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33858: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33873: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33885: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33893: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33918: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33951: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33958: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 33982: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34012: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34055: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34088: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34132: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34226: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34227: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34229: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34256: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34278: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34292: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34300: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34373: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34380: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34407: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34438: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34492: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34513: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34529: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34543: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34607: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34621: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34624: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34637: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34653: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34654: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34663: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34737: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34768: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34783: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34787: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34827: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34839: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34842: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34843: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34858: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34873: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34876: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34899: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34912: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34926: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34941: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34975: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 34986: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35015: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35016: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35027: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35042: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35088: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35121: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35125: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35144: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35223: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35239: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35293: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35295: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35296: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35339: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35365: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35470: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35471: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35489: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35514: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35516: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35575: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35576: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35585: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35586: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35587: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35612: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35659: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35667: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35671: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35691: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35725: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35731: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35735: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35737: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35757: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35760: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35770: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35781: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35817: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35852: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35885: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35900: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35995: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 35996: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36021: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36085: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36090: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36152: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36153: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36158: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36245: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36255: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36342: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36389: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36401: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36412: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36423: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36442: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36725: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36738: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36745: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36816: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36817: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36854: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 36861: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37028: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37090: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37092: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37094: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37276: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37301: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37497: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37498: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37585: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37615: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37635: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37699: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37701: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37707: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37728: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37729: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37768: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37782: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37806: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37838: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37863: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37887: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37972: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37981: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 37984: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38025: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38028: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38031: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38040: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38041: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38045: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38073: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38107: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38125: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38184: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38218: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38252: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38328: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38369: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38465: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38560: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38667: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38689: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38784: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38792: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38799: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38842: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38909: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38911: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38914: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 38940: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 39250: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 39343: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 39392: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 39460: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 39562: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 39602: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 39898: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 40174: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 40399: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 40444: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 40778: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 41491: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 41507: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 42047: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 42447: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 42494: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 42537: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 42544: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 42576: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 42744: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 42794: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 42875: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 43470: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 43505: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 43748: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 43749: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 43776: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 43992: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 44017: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 44088: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 44135: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 44249: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 44744: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 44824: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 45189: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 45568: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 46498: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 49820: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 49964: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 50075: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 8145: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 8146: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 8478: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 8557: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 8598: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 8802: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 9007: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 9842: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:
+Error processing 9875: Invalid dataset identifier (invalid dataset identifier)
+An error occurred in file 'h5py/h5d.pyx' on line 373 in 'h5py.h5d.DatasetID.get_type'
+Error message:

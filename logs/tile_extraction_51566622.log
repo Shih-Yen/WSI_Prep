@@ -1,0 +1,82 @@
+Restoring modules from user's fair-tuning-collection
+==================================================
+{ 'center_mask_height': 0.5,
+  'csv_path': None,
+  'keep_random_n': None,
+  'keep_top_n': None,
+  'mag_col': 'mag',
+  'magnifications': [40, 20, 10],
+  'n_parts': 100,
+  'n_workers': 1,
+  'only_coords': True,
+  'output_size': 224,
+  'part': 0,
+  'patch_folder': '/n/scratch/users/j/joh0984/tcga_tiles/tcgaCOAD',
+  'patch_size': 224,
+  'slide_folder': '/n/data2/hms/dbmi/kyu/lab/datasets/tcgaCOAD/',
+  'stride': 224,
+  'tissue_threshold': 80,
+  'use_center_mask': False,
+  'wsi_col': 'WSI_path'}
+==================================================
+all_df:                                                 WSI_path
+0     /n/data2/hms/dbmi/kyu/lab/datasets/tcgaCOAD/di...
+1     /n/data2/hms/dbmi/kyu/lab/datasets/tcgaCOAD/di...
+2     /n/data2/hms/dbmi/kyu/lab/datasets/tcgaCOAD/di...
+3     /n/data2/hms/dbmi/kyu/lab/datasets/tcgaCOAD/di...
+4     /n/data2/hms/dbmi/kyu/lab/datasets/tcgaCOAD/di...
+...                                                 ...
+2421  /n/data2/hms/dbmi/kyu/lab/datasets/tcgaCOAD/ti...
+2422  /n/data2/hms/dbmi/kyu/lab/datasets/tcgaCOAD/ti...
+2423  /n/data2/hms/dbmi/kyu/lab/datasets/tcgaCOAD/ti...
+2424  /n/data2/hms/dbmi/kyu/lab/datasets/tcgaCOAD/ti...
+2425  /n/data2/hms/dbmi/kyu/lab/datasets/tcgaCOAD/ti...
+
+[2426 rows x 1 columns]
+Loaded 1442 slides.
+Split slides into 100 parts, processing part 0
+Process slide indices [0:15]
+Filtered out already previously processed slides.
+Start processing slide: 9439bce8-5715-4d76-a5d8-c6cbe1b79435
+Found 13324 useful patches for slide 9439bce8-5715-4d76-a5d8-c6cbe1b79435
+Failed to process 9439bce8-5715-4d76-a5d8-c6cbe1b79435: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+Start processing slide: 4778042f-f210-489c-bb76-b4fe16b0d500
+Found 6566 useful patches for slide 4778042f-f210-489c-bb76-b4fe16b0d500
+Failed to process 4778042f-f210-489c-bb76-b4fe16b0d500: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+Start processing slide: a28f2969-31ae-408f-99f5-5428e183e123
+Found 58259 useful patches for slide a28f2969-31ae-408f-99f5-5428e183e123
+Failed to process a28f2969-31ae-408f-99f5-5428e183e123: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+Start processing slide: b254e383-a889-4b73-8f91-8580c8285754
+Found 17958 useful patches for slide b254e383-a889-4b73-8f91-8580c8285754
+Failed to process b254e383-a889-4b73-8f91-8580c8285754: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+Start processing slide: 13d1a0d9-78cd-4cfc-b670-34a79ebe52ee
+Found 12656 useful patches for slide 13d1a0d9-78cd-4cfc-b670-34a79ebe52ee
+Failed to process 13d1a0d9-78cd-4cfc-b670-34a79ebe52ee: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+Start processing slide: 6787693F-6E3E-479A-A4DE-44186659285F
+Failed to process 6787693F-6E3E-479A-A4DE-44186659285F: Magnification conflict: [20 40]
+Start processing slide: C7FC2C17-12CC-4F10-B54F-7C29379D834E
+Found 63909 useful patches for slide C7FC2C17-12CC-4F10-B54F-7C29379D834E
+Failed to process C7FC2C17-12CC-4F10-B54F-7C29379D834E: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+Start processing slide: e6307e86-29c5-4018-a94a-77fae9b08123
+Found 30426 useful patches for slide e6307e86-29c5-4018-a94a-77fae9b08123
+Failed to process e6307e86-29c5-4018-a94a-77fae9b08123: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+Start processing slide: 408BA0A6-E569-4464-A8CB-D6553A4DF9E0
+Found 69396 useful patches for slide 408BA0A6-E569-4464-A8CB-D6553A4DF9E0
+Failed to process 408BA0A6-E569-4464-A8CB-D6553A4DF9E0: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+Start processing slide: 15a569dc-30d6-4bef-908b-6183df4e9e01
+Failed to process 15a569dc-30d6-4bef-908b-6183df4e9e01: Magnification conflict: [20 40]
+Start processing slide: b257d5fd-b97b-4987-b088-77f044ca7fe2
+Found 78493 useful patches for slide b257d5fd-b97b-4987-b088-77f044ca7fe2
+Failed to process b257d5fd-b97b-4987-b088-77f044ca7fe2: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+Start processing slide: 5c4bbcd1-51ba-467d-93f9-f2a9e7c5e010
+Found 85595 useful patches for slide 5c4bbcd1-51ba-467d-93f9-f2a9e7c5e010
+Failed to process 5c4bbcd1-51ba-467d-93f9-f2a9e7c5e010: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+Start processing slide: 34b5db5c-74df-47d9-bb89-beec93ded868
+Found 12154 useful patches for slide 34b5db5c-74df-47d9-bb89-beec93ded868
+Failed to process 34b5db5c-74df-47d9-bb89-beec93ded868: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+Start processing slide: 1EE92F9A-3DAA-4C1E-9A17-F9E0D31BE0C1
+Found 48575 useful patches for slide 1EE92F9A-3DAA-4C1E-9A17-F9E0D31BE0C1
+Failed to process 1EE92F9A-3DAA-4C1E-9A17-F9E0D31BE0C1: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+Start processing slide: 875E7F95-A6D4-4BEB-A331-F9D8080898C2
+Found 71561 useful patches for slide 875E7F95-A6D4-4BEB-A331-F9D8080898C2
+Failed to process 875E7F95-A6D4-4BEB-A331-F9D8080898C2: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'

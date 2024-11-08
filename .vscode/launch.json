@@ -1,0 +1,45 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "tiles",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": [
+                "--slide_folder=/n/data2/hms/dbmi/kyu/lab/datasets/tcgaCOAD/",
+                "--patch_folder=/n/scratch/users/j/joh0984/tcga_tiles/tcgaGBM",
+                "--patch_size=224",
+                "--stride=224",
+                "--output_size=224",
+                "--tissue_threshold=80",
+                "--n_workers=1",
+                "--n_parts=100",
+                "--part=0",
+                "--only_coords"
+            ]
+        },
+        {
+            "name": "feature",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": [
+                "--patch_folder=/n/scratch/users/j/joh0984/tcga_tiles/tcgaGBM",
+                "--feat_folder=/n/scratch/users/j/joh0984/tcga_features/tcgaGBM",
+                "--wsi_folder=/n/data2/hms/dbmi/kyu/lab/datasets/tcgaGBM",
+                "--models=chief",
+                "--target_mag=20"
+            ],
+            "env": {
+                "CHIEF_PTH": "/n/data2/hms/dbmi/kyu/lab/che099/models/chief.pth",
+                "CTRANS_PTH": "/n/data2/hms/dbmi/kyu/lab/che099/models/ctranspath.pth"
+            }
+        }
+    ]
+}

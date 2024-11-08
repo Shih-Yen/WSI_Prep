@@ -1,0 +1,9 @@
+Restoring modules from user's gpu
+Traceback (most recent call last):
+  File "/home/bal753/sys_info.py", line 7, in <module>
+    import numpy as np
+ModuleNotFoundError: No module named 'numpy'
+Traceback (most recent call last):
+  File "/home/bal753/MOE/processing/create_features_bao.py", line 27, in <module>
+    import openslide
+ModuleNotFoundError: No module named 'openslide'

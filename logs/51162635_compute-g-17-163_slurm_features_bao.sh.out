@@ -1,0 +1,86 @@
+Restoring modules from user's gpu
+sys.platform: linux
+Python: 3.10.15 (main, Oct  3 2024, 07:27:34) [GCC 11.2.0]
+Python Path: /home/bal753/miniconda3/envs/immune/bin/python
+GCC: gcc (GCC) 6.2.0
+OpenCV: 4.10.0
+CUDA available: True
+MUSA available: False
+numpy_random_seed: 2147483648
+GPU 0: NVIDIA A40
+CUDA_HOME: /n/app/cuda/11.2
+NVCC: Cuda compilation tools, release 11.2, V11.2.142
+PyTorch: 2.1.2
+TorchVision: 0.16.2
+PyTorch compiling details: PyTorch built with:
+  - GCC 9.3
+  - C++ Version: 201703
+  - Intel(R) oneAPI Math Kernel Library Version 2023.1-Product Build 20230303 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v3.1.1 (Git Hash 64f6bcbcbab628e96f33a62c3e975f8535a7bde4)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - LAPACK is enabled (usually provided by MKL)
+  - NNPACK is enabled
+  - CPU capability usage: AVX512
+  - CUDA Runtime 12.1
+  - NVCC architecture flags: -gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86;-gencode;arch=compute_90,code=sm_90
+  - CuDNN 8.9.2
+  - Magma 2.6.1
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=12.1, CUDNN_VERSION=8.9.2, CXX_COMPILER=/opt/rh/devtoolset-9/root/usr/bin/c++, CXX_FLAGS= -D_GLIBCXX_USE_CXX11_ABI=0 -fabi-version=11 -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOROCTRACER -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-unused-parameter -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-stringop-overflow -Wno-psabi -Wno-error=pedantic -Wno-error=old-style-cast -Wno-invalid-partial-specialization -Wno-unused-private-field -Wno-aligned-allocation-unavailable -Wno-missing-braces -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Werror=cast-function-type -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_DISABLE_GPU_ASSERTS=ON, TORCH_VERSION=2.1.2, USE_CUDA=ON, USE_CUDNN=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, 
+
+\n
+Sun Nov  3 01:12:51 2024       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 550.54.14              Driver Version: 550.54.14      CUDA Version: 12.4     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A40                     On  |   00000000:17:00.0 Off |                    0 |
+|  0%   26C    P8             25W /  300W |       0MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+\n
+/home/bal753/miniconda3/envs/immune/lib/python3.10/site-packages/torch/functional.py:504: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /opt/conda/conda-bld/pytorch_1702400410390/work/aten/src/ATen/native/TensorShape.cpp:3526.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+==================================================
+{ 'batch_size': 64,
+  'device': 'cuda',
+  'feat_folder': '/n/scratch/users/b/bal753/DFCI_MOTSU',
+  'hf_token': None,
+  'models': [<ModelType.CTRANS: 1>],
+  'n_parts': 1,
+  'part': 0,
+  'patch_folder': '/n/scratch/users/b/bal753/DFCI_MOTSU',
+  'wsi_folder': '/home/bal753/lab/bal753/DFCI'}
+==================================================
+Found 412 available slide bags to process.
+Split items into 1 parts, processing part 0
+['10326', '10783', '10846', '11496', '12064', '12151', '12555', '12833', '13087', '13576', '13658', '14004', '14072', '14174', '14706', '14821', '15236', '15336', '15407', '15787', '15865', '16160', '16185', '16291', '16556', '16557', '16925', '17077', '17093', '17102', '17164', '17564', '17592', '17685', '17902', '17993', '18688', '18779', '19063', '19260', '19767', '19807', '20182', '20304', '20737', '21154', '21545', '22266', '22653', '22948', '23226', '23361', '23445', '23516', '23619', '23751', '23763', '23850', '23864', '23979', '24064', '24261', '24433', '24479', '24656', '24664', '24855', '25224', '25452', '25582', '25657', '25755', '25818', '25832', '25967', '25978', '26229', '26245', '26327', '26543', '26552', '26644', '26650', '26667', '26674', '26698', '26813', '27139', '27425', '27737', '27821', '27886', '27967', '27984', '27985', '27987', '28257', '28394', '28417', '28459', '28538', '28674', '28685', '28847', '28870', '29113', '29194', '29286', '29290', '29342', '29391', '29403', '29552', '29914', '29979', '30328', '30329', '30442', '30496', '30591', '30833', '30988', '31076', '31218', '31246', '31250', '31292', '31314', '31319', '31404', '31538', '31697', '31761', '31772', '31798', '31809', '31902', '31955', '32060', '32067', '32109', '32186', '32191', '32213', '32269', '32271', '32292', '32349', '32388', '32515', '32516', '32530', '32534', '32548', '32564', '32571', '32582', '32594', '32633', '32638', '32684', '32685', '32777', '32821', '32857', '32886', '32889', '32930', '33000', '33023', '33039', '33083', '33147', '33180', '33192', '33196', '33203', '33204', '33256', '33257', '33283', '33315', '33334', '33473', '33514', '33518', '33570', '33581', '33606', '33608', '33671', '33674', '33789', '33820', '33831', '33844', '33858', '33873', '33885', '33893', '33918', '33951', '33958', '33982', '34012', '34055', '34088', '34132', '34226', '34227', '34229', '34256', '34278', '34292', '34300', '34373', '34380', '34407', '34438', '34492', '34513', '34529', '34543', '34607', '34621', '34624', '34637', '34653', '34654', '34663', '34737', '34768', '34783', '34787', '34827', '34839', '34842', '34843', '34858', '34873', '34876', '34899', '34912', '34926', '34941', '34975', '34986', '35015', '35016', '35027', '35042', '35088', '35121', '35125', '35144', '35223', '35239', '35293', '35295', '35296', '35339', '35365', '35470', '35471', '35489', '35514', '35516', '35575', '35576', '35585', '35586', '35587', '35612', '35659', '35667', '35671', '35691', '35725', '35731', '35735', '35737', '35757', '35760', '35770', '35781', '35817', '35852', '35885', '35900', '35995', '35996', '36021', '36085', '36090', '36152', '36153', '36158', '36245', '36255', '36342', '36389', '36401', '36412', '36423', '36442', '36725', '36738', '36745', '36816', '36817', '36854', '36861', '37028', '37090', '37092', '37094', '37276', '37301', '37497', '37498', '37585', '37615', '37635', '37699', '37701', '37707', '37728', '37729', '37768', '37782', '37806', '37838', '37863', '37887', '37972', '37981', '37984', '38025', '38028', '38031', '38040', '38041', '38045', '38073', '38107', '38125', '38184', '38218', '38252', '38328', '38369', '38465', '38560', '38667', '38689', '38784', '38792', '38799', '38842', '38909', '38911', '38914', '38940', '39250', '39343', '39392', '39460', '39562', '39602', '39898', '40174', '40399', '40444', '40778', '41491', '41507', '42047', '42447', '42494', '42537', '42544', '42576', '42744', '42794', '42875', '43470', '43505', '43748', '43749', '43776', '43992', '44017', '44088', '44135', '44249', '44744', '44824', '45189', '45568', '46498', '49820', '49964', '50075', '8145', '8146', '8478', '8557', '8598', '8802', '9007', '9842', '9875']
+Process slide indices [0:412]
+Traceback (most recent call last):
+  File "/home/bal753/MOE/processing/create_features_bao.py", line 610, in <module>
+    main()
+  File "/home/bal753/MOE/processing/create_features_bao.py", line 597, in main
+    models = load_models(args)
+  File "/home/bal753/MOE/processing/create_features_bao.py", line 398, in wrapper_retry
+    return func(*args, **kwargs)
+  File "/home/bal753/MOE/processing/create_features_bao.py", line 422, in load_models
+    models[str(model)] = get_model(args, str(model)).to(args.device)
+  File "/home/bal753/MOE/processing/models/library.py", line 46, in get_model
+    model = get_ctrans()
+  File "/home/bal753/MOE/processing/models/library.py", line 238, in get_ctrans
+    model.load_state_dict(td["model"], strict=True)
+  File "/home/bal753/miniconda3/envs/immune/lib/python3.10/site-packages/torch/nn/modules/module.py", line 2152, in load_state_dict
+    raise RuntimeError('Error(s) in loading state_dict for {}:\n\t{}'.format(
+RuntimeError: Error(s) in loading state_dict for SwinTransformer:
+	Missing key(s) in state_dict: "patch_embed.proj.weight", "patch_embed.proj.bias". 
+	Unexpected key(s) in state_dict: "patch_embed.proj.0.weight", "patch_embed.proj.1.weight", "patch_embed.proj.1.bias", "patch_embed.proj.1.running_mean", "patch_embed.proj.1.running_var", "patch_embed.proj.1.num_batches_tracked", "patch_embed.proj.3.weight", "patch_embed.proj.4.weight", "patch_embed.proj.4.bias", "patch_embed.proj.4.running_mean", "patch_embed.proj.4.running_var", "patch_embed.proj.4.num_batches_tracked", "patch_embed.proj.6.weight", "patch_embed.proj.6.bias". 
