@@ -23,21 +23,46 @@ import PIL.Image
 from matplotlib.patches import Rectangle
 from PIL import Image
 from tqdm import tqdm
+from skimage.filters import threshold_multiotsu
 
 MAX_VISUALIZE_PATCHES = 2000
 Slide = openslide.OpenSlide
-
+# Modified by bao
+# 1. add support of reading csv files directly;
+# 2. add metadata to the coord files;
+# 3. change the folder organization (coords, masks, foreground, thumbnail);
+# 4. change the foreground extraction method;
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Choose magnification level and patch parameters."
     )
+    
     parser.add_argument(
         "--slide_folder",
         type=str,
-        default="/n/data2/hms/dbmi/kyu/lab/shl968/WSI_for_debug",
+        default="/n/data2/hms/dbmi/kyu/lab/bal753/WSI_for_debug",
         help="Root slides folder.",
     )
+    parser.add_argument(
+        '--csv_path',
+        type=str,
+        default=None,
+        help="""Path to the csv file containing the slide paths. 
+        If not provided, the script will search for all WSI files in the slide_folder.""",
+    )
+    parser.add_argument(
+        '--wsi_col',
+        type=str,
+        default='WSI_path',
+        help="""Column name in the csv file containing the slide paths.""",
+    )
+    parser.add_argument(
+        '--mag_col',
+        type=str,
+        default='mag',
+        help="""Column name in the csv file containing the magnification level of the slides.""",
+        ),
     parser.add_argument(
         "--patch_folder",
         type=str,
@@ -359,19 +384,85 @@ class H5Saver:
 
 def setup_folders(args: PatchConfig):
     os.makedirs(args.patch_folder, exist_ok=True)
+    os.makedirs(f"{args.patch_folder}/coords", exist_ok=True)
 
+def get_mag(wsi):
+    mag_ref = [20, 40]
+    mag_li = []
+    if 'tiff.XResolution' in wsi.properties.keys():
+        x_res = float(wsi.properties['tiff.XResolution']) / 10000
+        y_res = float(wsi.properties['tiff.YResolution']) / 10000
+        assert x_res == y_res
+        mag = 10*x_res
+        mag = min(mag_ref, key=lambda x: abs(x - mag))
+        mag_li.append(mag)
+    if 'openslide.mpp-x' in wsi.properties.keys():    # represent the microns per pixel in the X and Y dimensions
+        x_spacing = float(wsi.properties['openslide.mpp-x'])
+        y_spacing = float(wsi.properties['openslide.mpp-y'])
+        assert x_spacing == y_spacing
+        mag = 10/x_spacing
+        mag = min(mag_ref, key=lambda x: abs(x - mag))
+        mag_li.append(mag)
+    if 'aperio.MPP' in wsi.properties.keys():    # represents microns per pixel but is typically a single value
+        mpp = float(wsi.properties['aperio.MPP'])
+        mag = 10/mpp
+        mag = min(mag_ref, key=lambda x: abs(x - mag))
+        mag_li.append(mag)
+    if 'aperio.AppMag' in wsi.properties.keys():  # openslide doesn't set objective-power for all SVS files: https://github.com/openslide/openslide/issues/247
+        mag = float(wsi.properties.get("aperio.AppMag", None))
+        mag_li.append(int(mag))
+    if 'openslide.objective-power' in wsi.properties.keys():  # openslide doesn't set objective-power for all SVS files: https://github.com/openslide/openslide/issues/247
+        mag = float(wsi.properties.get("openslide.objective-power", None))
+        mag_li.append(int(mag))
 
-def store_available_coords(args: PatchConfig, slide_id, coords: np.ndarray):
+    if len(mag_li) == 0:
+        raise ValueError(f"Magnification not founds")
+    elif len(mag_li) != 0 and len(np.unique(mag_li)) == 1:
+        return mag_li[0]
+    else:
+        raise ValueError(f"Magnification conflict: {np.unique(mag_li)}")
+
+def store_available_coords(args: PatchConfig, slide_id, coords: np.ndarray,
+                           mag=None):
     if type(coords) != np.ndarray:
         coords = np.array(coords, dtype=[("x", np.int32), ("y", np.int32)])
 
-    with h5py.File(f"{args.patch_folder}/{slide_id}.h5", "w") as f:
+    with h5py.File(f"{args.patch_folder}/coords/{slide_id}.h5", "w") as f:
         _ = f.create_dataset("coords", data=coords)
+        # write meta data
+        if "metadata" not in f:
+            dtype = np.dtype(
+                [
+                    ("magnification", int),
+                    ("patch_size", int),
+                    ("stride", int),
+                    ("output_size", int),
+                ]
+            )
+            f.create_dataset(
+                "metadata",
+                (0,),
+                dtype=dtype,
+                maxshape=(None,),
+                chunks=True,
+                compression="gzip",
+                compression_opts=9,
+            )
+
+        metadata = f["metadata"]
+        current_size = metadata.shape[0]
+        metadata.resize(current_size + 1, axis=0)
+        metadata[current_size] = (
+            mag,
+            args.patch_size,
+            args.stride,
+            args.output_size,
+        )
 
 
 def visualize_patches(args: PatchConfig, slide_path: str, target_mag: int = 20):
     slide_id = get_slide_id(slide_path)
-    h5_file = h5py.File(f"{args.patch_folder}/{slide_id}.h5", "r")
+    h5_file = h5py.File(f"{args.patch_folder}/coords/{slide_id}.h5", "r")
     metadata = h5_file["metadata"]
 
     wsi = openslide.OpenSlide(slide_path)
@@ -419,7 +510,8 @@ def visualize_patches(args: PatchConfig, slide_path: str, target_mag: int = 20):
         ax.add_patch(rect)
 
     plt.axis("off")
-    output_path = f"{args.patch_folder}/{slide_id}.png"
+    # output_path = f"{args.patch_folder}/{slide_id}.png"
+    output_path = f"{slide_id}.png"
     plt.savefig(output_path)
     plt.close()
 
@@ -459,23 +551,30 @@ def setup_logging(args):
 
 
 def load_slides(args) -> List[str]:
-    ndpi_files_direct = glob.glob(f"{args.slide_folder}/*.ndpi")
-    svs_files_direct = glob.glob(f"{args.slide_folder}/*.svs")
-    mrxs_files_direct = glob.glob(f"{args.slide_folder}/*.mrxs")
-    ndpi_files_subdirs = glob.glob(f"{args.slide_folder}/**/*.ndpi", recursive=True)
-    svs_files_subdirs = glob.glob(f"{args.slide_folder}/**/*.svs", recursive=True)
-    mrxs_files_subdirs = glob.glob(f"{args.slide_folder}/**/*.mrxs", recursive=True)
-    all_files = (
-        ndpi_files_direct
-        + svs_files_direct
-        + ndpi_files_subdirs
-        + svs_files_subdirs
-        + mrxs_files_direct
-        + mrxs_files_subdirs
-    )
+
+    if args.csv_path is None:
+        ndpi_files_direct = glob.glob(f"{args.slide_folder}/*.ndpi")
+        svs_files_direct = glob.glob(f"{args.slide_folder}/*.svs")
+        mrxs_files_direct = glob.glob(f"{args.slide_folder}/*.mrxs")
+        ndpi_files_subdirs = glob.glob(f"{args.slide_folder}/**/*.ndpi", recursive=True)
+        svs_files_subdirs = glob.glob(f"{args.slide_folder}/**/*.svs", recursive=True)
+        mrxs_files_subdirs = glob.glob(f"{args.slide_folder}/**/*.mrxs", recursive=True)
+        all_files = (
+            ndpi_files_direct
+            + svs_files_direct
+            + ndpi_files_subdirs
+            + svs_files_subdirs
+            + mrxs_files_direct
+            + mrxs_files_subdirs
+        )
+        df = pd.DataFrame({args.wsi_col: all_files})
+    else:
+        df = pd.read_csv(args.csv_path)
+        all_files = list(df[args.wsi_col].values)
+
     all_files = list(set(all_files))
     all_files = sorted([f for f in all_files if os.path.isfile(f)])
-    return all_files
+    return all_files, df
 
 
 def load_success_ids(args) -> Set[str]:
@@ -488,23 +587,23 @@ def load_success_ids(args) -> Set[str]:
 
 
 def clean_unfinished(args: PatchConfig, slide_id: str):
-    if os.path.exists(f"{args.patch_folder}/{slide_id}"):
-        shutil.rmtree(f"{args.patch_folder}/{slide_id}")
-    if os.path.exists(f"{args.patch_folder}/{slide_id}.h5"):
+    if os.path.exists(f"{args.patch_folder}/coords/{slide_id}"):
+        shutil.rmtree(f"{args.patch_folder}/coords/{slide_id}")
+    if os.path.exists(f"{args.patch_folder}/coords/{slide_id}.h5"):
         print("Clean up existing h5 file")
-        os.remove(f"{args.patch_folder}/{slide_id}.h5")
-    if os.path.exists(f"{args.patch_folder}/{slide_id}.csv"):
-        os.remove(f"{args.patch_folder}/{slide_id}.csv")
-    if os.path.exists(f"{args.patch_folder}/{slide_id}.zip"):
-        os.remove(f"{args.patch_folder}/{slide_id}.zip")
+        os.remove(f"{args.patch_folder}/coords/{slide_id}.h5")
+    if os.path.exists(f"{args.patch_folder}/coords/{slide_id}.csv"):
+        os.remove(f"{args.patch_folder}/coords/{slide_id}.csv")
+    if os.path.exists(f"{args.patch_folder}/coords/{slide_id}.zip"):
+        os.remove(f"{args.patch_folder}/coords/{slide_id}.zip")
 
 
 def get_slide_id(slide_path: str) -> str:
     fname = os.path.basename(slide_path)
     # tcga files have 10 "-" separated parts
-    is_tcga = len(fname.split("-")) == 10
-    if is_tcga:
-        return os.path.basename(slide_path).split(".")[1]
+    is_tcga = len(fname.split("-")) == 10 
+    # if is_tcga:    ## disabled for compatibility with other datasets
+    #     return os.path.basename(slide_path).split(".")[1]
     # Check if the filename contains multiple dots in it, ex cytology slide contains date : 0081__-__02.14.20.ndpi
     if fname.count(".") > 1:
         return ".".join(fname.split(".")[:-1])
@@ -535,10 +634,42 @@ def get_thumbnail(wsi: Slide, downsample: int = 16) -> np.ndarray:
 
 
 def get_tissue_mask(args: PatchConfig, img_rgb: np.ndarray):
-    img_hsv = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2HSV)
-    img_med = cv2.medianBlur(img_hsv[:, :, 1], 11)
-    _, img_otsu = cv2.threshold(img_med, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    tissue_mask = img_otsu.astype(np.uint8)
+    # r_channel, g_channel, b_channel = cv2.split(img_rgb)
+
+    # r_channel = np.clip(r_channel * 1.5, 0, 255).astype(np.uint8)
+    # g_channel = np.clip(g_channel * 1.1, 0, 255).astype(np.uint8)
+    # b_channel = np.clip(b_channel * 1.1, 0, 255).astype(np.uint8)
+
+    # img_enhanced = cv2.merge([r_channel, g_channel, b_channel])
+    # Convert to HSV color space
+    hsv_image = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2HSV)
+
+    # Define H channel range to enhance red and pink
+    lower_red = np.array([160, 50, 50])   # Lower bound for red
+    upper_red = np.array([180, 255, 255])  # Upper bound for red
+    mask_red = cv2.inRange(hsv_image, lower_red, upper_red)  # pixel wih colour red is assigned with 0
+
+    # Define H channel range to suppress blue and green
+    lower_blue_green = np.array([0, 50, 50])   # Lower bound for blue and green
+    upper_blue_green = np.array([120, 255, 255])  # Upper bound for blue and green
+    mask_blue_green = cv2.inRange(hsv_image, lower_blue_green, upper_blue_green)
+
+    # Create the final mask to enhance red and pink, and suppress blue and green
+    final_mask = cv2.bitwise_or(mask_red, cv2.bitwise_not(mask_blue_green))
+
+    # Apply the mask
+    img_enhanced = cv2.bitwise_and(img_rgb, img_rgb, mask=final_mask)
+
+    hsv_image = cv2.cvtColor(img_enhanced, cv2.COLOR_RGB2HSV)
+    img_med = cv2.medianBlur(hsv_image[:, :, 1], 11)
+    thresholds = threshold_multiotsu(img_med, classes=3)
+    # _, img_otsu = cv2.threshold(img_med, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    thres = max(thresholds[0], 15)
+    tissue_mask = (img_med>thres).astype(np.uint8)
+    tissue_mask[tissue_mask!=0] = 255
+    k = np.ones((7, 7), dtype=np.uint8)
+    tissue_mask = cv2.morphologyEx(src=tissue_mask, kernel=k, op=cv2.MORPH_OPEN, iterations=3)
+    tissue_mask = cv2.morphologyEx(src=tissue_mask, kernel=k, op=cv2.MORPH_CLOSE, iterations=3)
 
     if args.use_center_mask:
         # Create a mask with a central rectangle activated
@@ -554,7 +685,7 @@ def get_tissue_mask(args: PatchConfig, img_rgb: np.ndarray):
     return tissue_mask
 
 
-def find_tissue_patches(args: PatchConfig, wsi: Slide) -> List[Tuple[int, int]]:
+def find_tissue_patches(args: PatchConfig, wsi: Slide, slide_id=None, mag=None) -> List[Tuple[int, int]]:
     target_mag = max(args.magnifications)
     patch_size = args.patch_size
     stride = args.stride
@@ -562,7 +693,24 @@ def find_tissue_patches(args: PatchConfig, wsi: Slide) -> List[Tuple[int, int]]:
     thumbnail = get_thumbnail(wsi)
     tissue_mask = get_tissue_mask(args, thumbnail)
     level_0_dim = wsi.dimensions
-    level_0_mag = int(wsi.properties.get("openslide.objective-power", 40))
+    if mag is None:
+        level_0_mag = get_mag(wsi)
+    else:
+        level_0_mag = mag
+
+    os.makedirs(f'{args.patch_folder}/thumbnail', exist_ok=True)
+    os.makedirs(f'{args.patch_folder}/masks', exist_ok=True)
+    os.makedirs(f'{args.patch_folder}/foreground', exist_ok=True)
+
+    Image.fromarray(thumbnail).save(f'{args.patch_folder}/thumbnail/{slide_id}.png')
+    thumbnail_mask_rgb = Image.fromarray(thumbnail*(tissue_mask[..., np.newaxis]!=0))
+    thumbnail_mask_rgb.save(f'{args.patch_folder}/masks/{slide_id}.png')
+    # Find contours
+    contours, _ = cv2.findContours(tissue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Create an empty image to draw contours on
+    cv2.drawContours(thumbnail, contours, -1, (255, 0, 0), thickness=6)  # white contours
+    Image.fromarray(thumbnail).save(f'{args.patch_folder}/foreground/{slide_id}.png')
 
     # compute the downsample from the tissue mask dimensions to level_0_dim
     downsample = level_0_dim[0] / tissue_mask.shape[1]
@@ -700,7 +848,7 @@ def process_slide(args: PatchConfig, slide_path: str, patch_coords: list):
     slide_id = get_slide_id(slide_path)
     total_patches = len(patch_coords)
 
-    h5_path = f"{args.patch_folder}/{get_slide_id(slide_path)}.h5"
+    h5_path = f"{args.patch_folder}/coords/{slide_id}.h5"
     h5_saver = H5Saver(h5_path)
     with ProcessPoolExecutor(max_workers=args.n_workers) as executor, tqdm(
         total=total_patches, desc=f"Processing {slide_id}"
@@ -727,7 +875,6 @@ def process_slide(args: PatchConfig, slide_path: str, patch_coords: list):
         h5_saver.keep_random_n(args.keep_random_n)
     print(f"Saved {len(h5_saver)} patches for slide id {slide_id}")
 
-
 def main():
     args = parse_args()
     setup_folders(args)
@@ -739,7 +886,8 @@ def main():
     print("=" * 50)
 
     # === Load all WSI files ===
-    all_slides = load_slides(args)
+    all_slides, all_df  = load_slides(args)
+
     print(f"Loaded {len(all_slides)} slides.")
 
     success_ids = load_success_ids(args)
@@ -754,6 +902,8 @@ def main():
         slide for slide in all_slides if get_slide_id(slide) not in success_ids
     ]
     print("Filtered out already previously processed slides.")
+
+    ##
     for slide_path in all_slides:
         slide_id = get_slide_id(slide_path)
         if slide_id in success_ids:
@@ -763,7 +913,11 @@ def main():
         try:
             print(f"Start processing slide: {slide_id}")
             wsi = openslide.OpenSlide(slide_path)
-            patch_coords = find_tissue_patches(args, wsi)
+            if args.mag_col in all_df.columns:
+                mag = all_df.loc[all_df[args.wsi_col]==slide_path, args.mag_col].values[0]
+            else:
+                mag = get_mag(wsi)
+            patch_coords = find_tissue_patches(args, wsi, slide_id=slide_id, mag=mag)
             print(f"Found {len(patch_coords)} useful patches for slide {slide_id}")
 
             if not args.only_coords:
@@ -771,7 +925,7 @@ def main():
                 # don't visualize
                 visualize_patches(args, slide_path, target_mag=max(args.magnifications))
             else:
-                store_available_coords(args, slide_id, patch_coords)
+                store_available_coords(args, slide_id, patch_coords, mag=mag)
 
             with open(f"{args.patch_folder}/success.txt", "a") as f:
                 f.write(f"{slide_id}\n")
@@ -783,3 +937,14 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# python create_tiles_bao.py \
+#     --csv_path /home/bal753/DFCI_immune_file_manual.csv \
+#     --wsi_col FILE_PATH \
+#     --patch_folder /n/scratch/users/b/bal753/DFCI_EN \
+#     --patch_size 224 \
+#     --stride 224 \
+#     --output_size 224 \
+#     --tissue_threshold 5 \
+#     --magnifications 20\
+#     --n_workers 16 --only_coords

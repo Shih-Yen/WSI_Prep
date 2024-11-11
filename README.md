@@ -2,22 +2,24 @@
 
 Follow this guide to use our processing scripts.
 
-**Basics:** Create a new conda environment and install the requirements.
+**Basics:** Create a new conda environment and install the requirements
+
+For installing Openslide:
+
+<pre class="c-mrkdwn__pre" data-stringify-type="pre"><div class="p-rich_text_block--no-overflow"># installation by conda
+conda install conda-forge::openslide
+conda install conda-forge::openslide-python
+
+# if above failed, just try
+conda install conda-forge/label/cf202003::openslide</div></pre>
+
 
 ## Create Tiles
 
-Example:
+Example slurm script:
 
 ```bash
-python create_tiles.py \
-    --slide_folder "/data/wsi" \
-    --patch_folder "data/patches/40_20_10" \
-    --patch_size 1000 \
-    --stride 1000 \
-    --output_size 224 \
-    --tissue_threshold 5 \
-    --magnifications 40 20 10\
-    --n_workers 16
+sbatch slurm_tiles_batch.sh
 ```
 
 ## Create Features
@@ -49,12 +51,6 @@ The other models are downloaded on the fly in case you want to use them. Current
 - cigar
 - virchov (requires `hf_token`)
 
-For faster processing, it makes sense to split your dataset into parts. You can use a loop to do so quickly.
+Example slurm script:
 
-```bash
-n_parts=500
-for i in $(seq 0 $((n_parts - 1))); do
-    sbatch slurm_features.sh "/home/che099/che099/ebrains/patches" "/home/che099/che099/ebrains/features" $n_parts $i
-    sleep 0.1
-done
-```
+sbatch slurm_features_batch.sh

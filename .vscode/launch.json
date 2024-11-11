@@ -30,11 +30,15 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                "--patch_folder=/n/scratch/users/j/joh0984/tcga_tiles/tcgaGBM",
-                "--feat_folder=/n/scratch/users/j/joh0984/tcga_features/tcgaGBM",
-                "--wsi_folder=/n/data2/hms/dbmi/kyu/lab/datasets/tcgaGBM",
-                "--models=chief",
-                "--target_mag=20"
+                "--patch_folder=/n/scratch/users/s/shl968/WSI_prep_test",
+                "--feat_folder=/n/scratch/users/s/shl968/WSI_feat_test",
+                "--wsi_folder=/n/data2/hms/dbmi/kyu/lab/shl968/WSI_for_debug",
+                "--models=chief,ctrans",
+                "--target_mag=20",
+                "--n_parts=2",
+                "--part=1",
+                "--device=cpu",
+                "--stain_norm"
             ],
             "env": {
                 "CHIEF_PTH": "/n/data2/hms/dbmi/kyu/lab/che099/models/chief.pth",

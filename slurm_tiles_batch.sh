@@ -13,30 +13,35 @@
 #SBATCH -p short
 #SBATCH --account=yu_ky98
 #SBATCH --mem=16G
-#SBATCH -o logs/tile_extraction_%j.log
-#SBATCH -e logs/tile_extraction_%j.log
-#SBATCH --array=0
+#SBATCH -o logs/tile_extraction_%A_%a.log
+#SBATCH -e logs/tile_extraction_%A_%a.log
+#SBATCH --array=0-100    # <- change this to the number of jobs you want to split the data into
+
+## === PARAMETERS FOR THE TILE EXTRACTION ===
+n_parts=100               # <- change this to the number of jobs you want to split the data into
+slide_folder="/n/data2/hms/dbmi/kyu/lab/shl968/WSI_for_debug" # <- change this to the path containing your WSIs (subfolders/nested subfolders are okay)
+patch_folder="/n/scratch/users/s/shl968/WSI_prep_test"        # <- change this to the path to save your patches
+# NOT RECOMMEND USING 40X MAGNIFICATION IF YOU ARE NOT SURE IF ALL YOUR SLIDES ARE 40X
+MAGNIFICATION=20       
+## ==============================================
 
 
-# === CHANGE THIS ===
-module restore fair-tuning-collection
-source activate moe
+module restore default
+source activate HTAN_env
+python3 --version
 
-n_parts=100
+
 IDX=$((SLURM_ARRAY_TASK_ID))
 part=$IDX
-slide_folder="/n/data2/hms/dbmi/kyu/lab/datasets/tcgaCOAD/"
-patch_folder="/n/scratch/users/j/joh0984/tcga_tiles/tcgaCOAD"
 
-
-python create_tiles_bao.py \
+python create_tiles.py \
     --slide_folder $slide_folder \
     --patch_folder $patch_folder \
     --patch_size 224 \
     --stride 224 \
     --output_size 224 \
     --tissue_threshold 80 \
-    --magnifications 40 20 10\
+    --magnifications $MAGNIFICATION \
     --n_workers 1 \
     --n_parts $n_parts \
     --part $part \
