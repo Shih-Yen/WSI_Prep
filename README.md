@@ -52,5 +52,6 @@ The other models are downloaded on the fly in case you want to use them. Current
 - virchov (requires `hf_token`)
 
 Example slurm script:
-
+```bash
 sbatch slurm_features_batch.sh
+```
